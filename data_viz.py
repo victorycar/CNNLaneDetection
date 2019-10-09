@@ -10,13 +10,19 @@ import matplotlib.patches as mpatches
 from matplotlib.path import Path
 from skimage.draw import line, bezier_curve
 
+Y_MAP = []
 
 def draw_lane(image, lane_array):
     for point in lane_array:
-        x = point[0] * 1280
-        y = point[1] * 720
-        print((int(x),int(y)))
-        cv2.circle(image, (int(x),int(y)), 10, [0, 255, 100], 3)
+        if point[0] < 0.1:
+            continue
+
+        x = point[0]
+        y = point[1]
+
+        Y_MAP.append(y)
+        #print((int(x),int(y)))
+        cv2.circle(image, (int(x),int(y)), 3, [0, 255, 100], 3)
 
 def draw_label(data):
     image = data[0]
@@ -34,12 +40,17 @@ def draw_label(data):
     draw_lane(image, lane_2)
     draw_lane(image, lane_3)
     draw_lane(image, lane_4)
+   
+   
 
-    plt.imshow(image)
-    plt.show()
+    cv2.imshow("test",image)
+    
 
     
-data = np.load("data/train/data-0.npy", allow_pickle=True)
-draw_label(data)
 
+files = glob.glob("data/val/*.npy")
 
+for file in files:
+    data = np.load(file, allow_pickle=True)
+    draw_label(data)
+    cv2.waitKey(100)

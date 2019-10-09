@@ -1,2 +1,6 @@
 data/*
 weights/*
+log/*
+training/*
+*.mp4
+*.npy

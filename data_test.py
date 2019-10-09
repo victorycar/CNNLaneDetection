@@ -13,7 +13,7 @@ from tqdm import tqdm
 BASE_PATH = "D:/Datasets/TuSimple/"
 LABEL_FILES = ["label_data_0601.json",
                "label_data_0531.json", "label_data_0601.json"]
-POINT_COUNT = 50
+POINT_COUNT = 15
 VAL_COUNT = 300
 TRAIN_COUNT = 800
 
@@ -59,15 +59,15 @@ def parse_labels(data):
     lane_4 = []
 
     for i in range(POINT_COUNT):
-        x1 = lanes[0][i]
-        x2 = lanes[1][i]
+        x1 = lanes[0][i * 3]
+        x2 = lanes[1][i * 3]
         try:
-            x3 = lanes[2][i]
+            x3 = lanes[2][i * 3]
         except:
             x3 = -2
             
         try:
-             x4 = lanes[3][i]
+             x4 = lanes[3][i * 3]
         except:
              x4 = -2
            
@@ -80,12 +80,12 @@ def parse_labels(data):
             x3 = 0
         if x4 is -2:
             x4 = 0
-        y = h_samples[i]
+        y = h_samples[i * 3]
         
-        lane_1.append((x1 / 1280, y / 720))
-        lane_2.append((x2 / 1280, y / 720))
-        lane_3.append((x3 / 1280, y / 720))
-        lane_4.append((x4 / 1280, y / 720))
+        lane_1.append((x1, y ))
+        lane_2.append((x2 , y))
+        lane_3.append((x3 , y))
+        lane_4.append((x4, y))
 
     return (image, lane_1, lane_2, lane_3, lane_4)
 
